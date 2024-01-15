@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script>
+        function bodyload(){
+            var lblemail = document.getElementById("lblemail");
+
+            if(localStorage.getItem("Uid")==null){
+                location.href = "index.html";
+            }else{
+                lblemail.innerHTML = localStorage.getItem("Uid");
+            }
+            DisplayTask();
+        }
+        function SignOutClick(){
+            localStorage.removeItem("Uid");
+            localStorage.removeItem("PWD");
+            location.href = "index.html";
+        }
+
+        function AddClick(){
+            var UserTextBox = document.getElementById("txt");
+            var UserArray = [];
+            var objstr = localStorage.getItem('Users');
+            if(objstr != null){
+                UserArray = JSON.parse(objstr);
+            }
+
+            if(UserTextBox.value === ""){
+                alert("Please enter a Task");
+            } else {
+                UserArray.push({'Name': UserTextBox.value});
+                SaveTask(UserArray);
+                DisplayTask();
+                UserTextBox.value = "";
+            }
+        }
+
+        function SaveTask(User){
+            var string = JSON.stringify(User);
+            localStorage.setItem('Users', string);
+        }
+
+        function DisplayTask(){
+            var statement = "";
+            var UserArray = JSON.parse(localStorage.getItem('Users'));
+            if(UserArray != null){
+                UserArray.forEach(function(User, index) {
+                    statement += `
+                    <tr>
+                      <td>${index + 1}</td>
+                      <td>${User.Name}</td>
+                      <td><button onclick="DeleteTask(${index})" class="bi bi-trash-fill btn btn-danger"></button></td>
+                    </tr>
+                    `;
+                });
+            }
+            document.getElementById("records").innerHTML = statement;
+        }
+
+        function DeleteTask(index){
+            var UserArray = JSON.parse(localStorage.getItem('Users'));
+            if(UserArray != null){
+                UserArray.splice(index, 1);
+                SaveTask(UserArray);
+                DisplayTask();
+            }
+        }
+
+        DisplayTask();
+    </script>
+</head>
+<body onload="bodyload()">
+   <header class="d-flex justify-content-between container-fluid bg-dark text-white">
+    <div class="ms-5 p-2 ps-5">
+        <h2>Welcome- <span id="lblemail"></span></h2>
+    </div>
+    <div class="me-5 pe-5 p-2">
+        <a class="fs-4 me-2 btn btn-success" href="index.html">Login</a>
+        <a class="fs-4 btn btn-danger" href="javascript:SignOutClick()">SignOut</a>
+    </div>
+   </header>
+
+   <section>
+     <main class="mt-4">
+        <div class="text-center mb-3">
+            <h2>ToDo List App</h2>
+            <h4>Please Enter Your task Below.</h4>
+        </div>
+         <div class="d-flex justify-content-center">
+            <div class="input-group w-50">
+                <input class="form-control" placeholder="Enter Task Here" type="text" id="txt">
+                <button onclick="AddClick()" id="btnadd" class="btn btn-success">Add</button>
+            </div>
+         </div>
+         <div class="text-center d-flex justify-content-center mt-4">
+            <table class="table border border-1 w-50">
+                <thead>
+                  <tr>
+                      <th>#</th>
+                      <th>Task</th>
+                      <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="records"></tbody>
+            </table>
+         </div>
+     </main>
+   </section>
+    
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo-Tist</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <script>
+        function LoginClick(){
+            var Email = document.getElementById("txtemail").value;
+            var Password = document.getElementById("txtpwd").value;
+            
+             localStorage.setItem("Uid",Email);
+             localStorage.setItem("PWD",Password);
+             location.href = "home.html";
+        }
+    </script>
+</head>
+<body class="container-fluid bg-success-subtle">
+    <h1 class="text-center mt-5  text-success">ToDo-Tist App</h1>
+      <div class="h3 text-center">Please Login to Perform your Tasks</div> 
+
+      <div class="d-flex justify-content-center ">
+        <div class="text-center ps-5 ms-5 mt-4 me-5 pe-5 border border-2 w-50">
+            <form action="">
+               <dl>
+                <dt class="mt-2 mb-2 form-label">Enter Name:</dt>
+                <dd><input class="form-control" type="email" id="txtemail" name="text" ></dd>
+                <dt class="mt-2 mb-2 form-label">Enter Password</dt>
+                <dd><input class="form-control" type="password" id="txtpwd" name="password" ></dd>
+               </dl>
+               <button onclick="LoginClick()" class="btn btn-primary w-100 mb-4">Login</button>
+            </form>
+           
+
+          </div>
+      </div>
+</body>
+</html>
